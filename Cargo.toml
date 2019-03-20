@@ -1,0 +1,7 @@
+[package]
+name = "dice-roller"
+version = "0.1.0"
+authors = ["Levi Payne <levi.dyrek@gmail.com>"]
+edition = "2018"
+
+[dependencies]
