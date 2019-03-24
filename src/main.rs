@@ -11,4 +11,9 @@ fn main() {
     });
 
     println!("Config: {:?}", config);
+
+    if let Err(e) = dice_roller::run(config) {
+        eprintln!("Application error: {}", e);
+        process::exit(1);
+    }
 }
