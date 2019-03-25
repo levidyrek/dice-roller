@@ -3,7 +3,6 @@ extern crate rand;
 use std::error::Error;
 use rand::distributions::{Distribution, Uniform};
 
-#[derive(Debug)]
 pub struct Config {
     pub rolls: u32,
     pub die: u32,
@@ -23,15 +22,20 @@ impl Config {
             return Err("Dice roll must be of the format: <num_of_rolls>d<sides_of_die>");
         }
 
+        let parse_err = "Numbers of rolls and die type must both be positive integers";
         let mut parts = parts.iter();
         let rolls = parts.next().unwrap().parse::<u32>();
         let die = parts.next().unwrap().parse::<u32>();
         if rolls.is_err() || die.is_err() {
-            return Err("Numbers of rolls and die type must both be positive integers");
+            return Err(parse_err);
         }
 
         let rolls = rolls.unwrap();
         let die = die.unwrap();
+        if rolls == 0 || die == 0 {
+            return Err(parse_err);
+        }
+
         Ok(Config { rolls, die })
     }
 }
