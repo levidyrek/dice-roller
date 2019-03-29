@@ -52,4 +52,56 @@ mod tests {
                 format: <num_of_rolls>d<sides_of_die>\n"
             );
     }
+
+    #[test]
+    fn config_too_many_nums() {
+        let mut cmd = Command::cargo_bin("dice_roller").unwrap();
+        cmd
+            .arg("2d2d2")
+            .assert()
+            .failure()
+            .stderr("\
+                Problem parsing arguments: Dice roll must be of the \
+                format: <num_of_rolls>d<sides_of_die>\n"
+            );
+    }
+
+    #[test]
+    fn config_zero_rolls() {
+        let mut cmd = Command::cargo_bin("dice_roller").unwrap();
+        cmd
+            .arg("0d8")
+            .assert()
+            .failure()
+            .stderr("\
+                Problem parsing arguments: \
+                Numbers of rolls and die type must both be positive integers\n"
+            );
+    }
+
+    #[test]
+    fn config_zero_die() {
+        let mut cmd = Command::cargo_bin("dice_roller").unwrap();
+        cmd
+            .arg("2d0")
+            .assert()
+            .failure()
+            .stderr("\
+                Problem parsing arguments: \
+                Numbers of rolls and die type must both be positive integers\n"
+            );
+    }
+
+    #[test]
+    fn config_non_int() {
+        let mut cmd = Command::cargo_bin("dice_roller").unwrap();
+        cmd
+            .arg("ed8")
+            .assert()
+            .failure()
+            .stderr("\
+                Problem parsing arguments: \
+                Numbers of rolls and die type must both be positive integers\n"
+            );
+    }
 }
