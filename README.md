@@ -1,3 +1,3 @@
 # Dice Roller #
 
-Dice Roller is a command line application (currently in progress) that simulates dice rolls for the dice specified by the user and outputs the results.
+Dice Roller is a command line application that simulates dice rolls for the dice specified by the user and outputs the results.

@@ -41,17 +41,44 @@ impl Config {
 }
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
-    let mut rng = rand::thread_rng();
-    let upper_bound = config.die + 1;
-    let die = Uniform::from(1..upper_bound);
-
-    let mut total = 0;
-    for x in 0..config.rolls {
-        let throw = die.sample(&mut rng);
-        total += throw;
-        println!("Throw {}: {}", x + 1, throw);
+    let (throws, total) = get_throws(config.die, config.rolls);
+    for (index, throw) in throws.iter().enumerate() {
+        println!("Throw {}: {}", index + 1, throw);
     }
     println!("Total: {}", total);
 
     Ok(())
+}
+
+fn get_throws(die: u32, rolls: u32) -> (Vec<u32>, u32) {
+    let mut rng = rand::thread_rng();
+    let upper_bound = die + 1;
+    let die = Uniform::from(1..upper_bound);
+
+    let mut throws = Vec::new();
+    let mut total = 0;
+    for _x in 0..rolls {
+        let throw = die.sample(&mut rng);
+        total += throw;
+        throws.push(throw);
+    }
+
+    (throws, total)
+}
+
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_get_throws() {
+        let (throws, total) = get_throws(10, 10);
+        assert_eq!(throws.len(), 10);
+        let mut tot = 0;
+        for throw in throws {
+            assert!(throw < 11);
+            assert!(throw > 0);
+            tot += throw;
+        }
+        assert_eq!(total, tot);
+    }
 }
